@@ -4,6 +4,13 @@ declare(strict_types = 1);
 
 class ArticleController
 {
+
+    private databaseManager $databaseManager;
+
+    public function __construct($databaseManager)
+    {
+        $this->databaseManager = $databaseManager;
+    }
     public function index()
     {
         // Load all required data
@@ -16,15 +23,13 @@ class ArticleController
     // Note: this function can also be used in a repository - the choice is yours
     private function getArticles()
     {
-        // TODO: prepare the database connection
-        // Note: you might want to use a re-usable databaseManager class - the choice is yours
-        // TODO: fetch all articles as $rawArticles (as a simple array)
-        $rawArticles = [];
+        $database = $this->databaseManager->connection;
+        $query = $database->query("SELECT * FROM articles");
+        $rawArticles = $query->fetchAll();
 
         $articles = [];
         foreach ($rawArticles as $rawArticle) {
-            // We are converting an article from a "dumb" array to a much more flexible class
-            $articles[] = new Article($rawArticle['title'], $rawArticle['description'], $rawArticle['publish_date']);
+            $articles[] = new Article($rawArticle['title'], $rawArticle['description'], $rawArticle['publish_date'], $rawArticle['id']);
         }
 
         return $articles;
@@ -33,5 +38,18 @@ class ArticleController
     public function show()
     {
         // TODO: this can be used for a detail page
+        $article = $this->getOneArticle();
+        require './View/articles/show.php';
+    }
+
+    private function getOneArticle()
+    {
+        $id = $_GET["id"];
+        $database = $this->databaseManager->connection;
+        $query = $database->query("SELECT * FROM articles WHERE id=$id");
+        $rawArticle = $query->fetch();
+        $oneArticle = new Article($rawArticle['title'], $rawArticle['description'], $rawArticle['publish_date'], $rawArticle['id']);
+    
+        return $oneArticle;
     }
 }
