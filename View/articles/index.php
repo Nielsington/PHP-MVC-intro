@@ -1,12 +1,15 @@
 <?php require 'View/includes/header.php'?>
 
-<?php // Use any data loaded in the controller here ?>
+<?php 
+    global $databaseManager; 
+    $url = (new ArticleController($databaseManager))->getUrl();
+?>
 
 <section>
     <h1>Articles</h1>
     <ul>
         <?php foreach ($articles as $article) : ?>
-            <li><a href="?id=<?= $article->id ?>&page=articles-show"><?= $article->title ?></a> (<?= $article->formatPublishDate() ?>)</li>
+            <li><a href="<?=$url.$article->id?>"><?=$article->title?></a> (<?= $article->formatPublishDate() ?>)</li>
         <?php endforeach; ?>
     </ul>
 </section>
