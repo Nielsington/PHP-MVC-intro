@@ -7,9 +7,8 @@
     <p><?= $article->formatPublishDate() ?></p>
     <p><?= $article->description ?></p>
 
-    // TODO: links to next and previous
-    <a href="?page=articles-show&id=<?= $article->id-1 ?>">Previous article</a>
-    <a href="?page=articles-show&id=<?= $article->id+1 ?>">Next article</a>
+    <a href="?page=articles-show&id=<?= $ids[$currentId-1] ?>">Previous article</a>
+    <a href="?page=articles-show&id=<?= $ids[$currentId+1] ?>">Next article</a>
 </section>
 
 <?php require 'View/includes/footer.php'?>
