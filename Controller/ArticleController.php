@@ -55,4 +55,9 @@ class ArticleController
     
         return $oneArticle;
     }
+
+    public function getUrl()
+    {
+        return '?page=articles-show&id=';
+    }
 }
